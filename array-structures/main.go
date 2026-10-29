@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	// array considerado um slice, pois tem tamanho dinâmico, diferente de um array comum que tem tamanho fixo
 	names := []string{"Breno", "Thaynara", "Maria", "Edila"}
-	fmt.Println(names)
+	fmt.Println(names, len(names), cap(names))
 	names = append(names, "Rafael")
 	fmt.Println(names, len(names), cap(names))
 	///////////////////////////////////////
