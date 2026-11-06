@@ -40,7 +40,25 @@ func words2(channel chan<- string) {
 	}
 	close(channel)
 }
+
+func getNumbers() <-chan int {
+	ch := make(chan int)
+
+	go func() {
+		defer close(ch)
+		for i := range 1000 {
+			ch <- i
+		}
+	}()
+
+	return ch
+}
+
 func main() {
+
+	for item := range getNumbers() {
+		fmt.Println(item)
+	}
 	// goroutines without buffer
 	// channelToNumbers := make(chan bool)
 	// channelToWords := make(chan bool)
@@ -53,18 +71,19 @@ func main() {
 	// fmt.Println()
 	// fmt.Println("End execution")
 	// goroutines without buffer
-	channelToNumbers2 := make(chan int)
-	channelToNumbers2Done := make(chan bool)
+	// channelToNumbers2 := make(chan int)
+	// channelToNumbers2Done := make(chan bool)
 
-	go numbers2(channelToNumbers2)
-	go func() {
-		for item := range channelToNumbers2 {
-			fmt.Printf("read by the channel %d \n", item)
-			time.Sleep(time.Millisecond * 150)
-		}
-		channelToNumbers2Done <- true
-	}()
-	<-channelToNumbers2Done
+	// go numbers2(channelToNumbers2)
+	// go func() {
+	// 	for item := range channelToNumbers2 {
+	// 		fmt.Printf("read by the channel %d \n", item)
+	// 		time.Sleep(time.Millisecond * 150)
+	// 	}
+	// 	channelToNumbers2Done <- true
+	// }()
+	// <-channelToNumbers2Done
+
 	// goroutines with buffer
 	// channelToWords2 := make(chan string, 3)
 	// go words2(channelToWords2)
